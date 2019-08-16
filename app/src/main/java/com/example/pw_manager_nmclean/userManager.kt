@@ -1,6 +1,6 @@
 package com.example.pw_manager_nmclean
 
-class Controller {
+class userManager {
     val userlist = userlist()
 
     //populate userlist with saved data on app startup
@@ -16,6 +16,7 @@ class Controller {
     }
 
     fun login(email:String, pw:String) : Boolean {
+
         userlist.getArray().forEach(){
             if(it.email.equals(email) && it.pw.equals(pw))
                 return true

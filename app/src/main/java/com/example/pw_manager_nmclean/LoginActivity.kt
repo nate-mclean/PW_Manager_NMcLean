@@ -14,7 +14,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         //instantiate controller
-        val controller = Controller()
+        val userManager = userManager()
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -32,7 +32,7 @@ class LoginActivity : AppCompatActivity() {
             var myPW = editpw.text.toString()
             //check if login is valid
 
-            if (controller.login(myEmail, myPW)) {
+            if (userManager.login(myEmail, myPW)) {
                 //start main activity if login is valid
                 val intent = Intent(this, MainActivity::class.java)
                 intent.putExtra("keyIdentifier", 1)
@@ -49,12 +49,13 @@ class LoginActivity : AppCompatActivity() {
         registerbutton.setOnClickListener {
             var myEmail = editemail.text.toString()
             var myPW = editpw.text.toString()
-            var count = 0;
+            var validEmail = false;
+            var validPw = false;
 
 
             //check email is valid
             if (myEmail.validEmail())
-                count++
+                validEmail = true;
             else
                 Toast.makeText(getApplicationContext(), "Email invalid", Toast.LENGTH_SHORT).show();
 
@@ -75,16 +76,16 @@ class LoginActivity : AppCompatActivity() {
                 }
                 .addSuccessCallback {
                     //success
-                    count++
+                    validPw = true;
                 }
                 .check()
 
             //if both yes (count == 2) then save to memory
             //create account, clear fields, toast success
-            if(count == 2){
+            if(validEmail && validPw){
 
                 //call controller to create account, return bool
-                if(controller.createAccount(myEmail,myPW))
+                if(userManager.createAccount(myEmail,myPW))
                 {
                     //if true
                     //toast success

@@ -12,6 +12,10 @@ import com.wajahatkarim3.easyvalidation.core.view_ktx.validator
 class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        //instantiate controller
+        val controller = Controller()
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
@@ -36,8 +40,6 @@ class LoginActivity : AppCompatActivity() {
             var myEmail = editemail.text.toString()
             var myPW = editpw.text.toString()
             var count = 0;
-
-            //check if email already exists in system
 
 
             //check email is valid
@@ -69,6 +71,25 @@ class LoginActivity : AppCompatActivity() {
 
             //if both yes (count == 2) then save to memory
             //create account, clear fields, toast success
+            if(count == 2){
+
+                //call controller to create account, return bool
+                if(controller.createAccount(myEmail,myPW))
+                {
+                    //if true
+                    //toast success
+                    editemail.setText("")
+                    editpw.setText("")
+                    Toast.makeText(getApplicationContext(), "Account created successfully.", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    //if false
+                    //account already exists
+                    Toast.makeText(getApplicationContext(), "Account already exists.", Toast.LENGTH_SHORT).show();
+                }
+
+            }
 
         }
     }

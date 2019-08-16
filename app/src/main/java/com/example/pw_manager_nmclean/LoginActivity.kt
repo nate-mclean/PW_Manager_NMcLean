@@ -32,16 +32,16 @@ class LoginActivity : AppCompatActivity() {
             var myPW = editpw.text.toString()
             //check if login is valid
 
-            if(controller.login(myEmail,myPW)){
+            if (controller.login(myEmail, myPW)) {
                 //start main activity if login is valid
                 val intent = Intent(this, MainActivity::class.java)
                 intent.putExtra("keyIdentifier", 1)
                 startActivity(intent)
                 Toast.makeText(getApplicationContext(), "Login Successful.", Toast.LENGTH_SHORT).show();
-        }
-            else{
+            } else {
                 Toast.makeText(getApplicationContext(), "Invalid Login.", Toast.LENGTH_SHORT).show();
             }
+        }
 
 
         //register button

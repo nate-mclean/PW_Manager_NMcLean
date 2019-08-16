@@ -23,16 +23,26 @@ class LoginActivity : AppCompatActivity() {
         val editemail = findViewById<EditText>(R.id.enteremail)
         val editpw = findViewById<EditText>(R.id.enterpassword)
 
+
+
         //login button
         val loginbutton = findViewById<Button>(R.id.loginbutton)
         loginbutton.setOnClickListener {
+            var myEmail = editemail.text.toString()
+            var myPW = editpw.text.toString()
             //check if login is valid
 
-            //start main activity if login is valid
-            val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("keyIdentifier", 1)
-            startActivity(intent)
+            if(controller.login(myEmail,myPW)){
+                //start main activity if login is valid
+                val intent = Intent(this, MainActivity::class.java)
+                intent.putExtra("keyIdentifier", 1)
+                startActivity(intent)
+                Toast.makeText(getApplicationContext(), "Login Successful.", Toast.LENGTH_SHORT).show();
         }
+            else{
+                Toast.makeText(getApplicationContext(), "Invalid Login.", Toast.LENGTH_SHORT).show();
+            }
+
 
         //register button
         val registerbutton = findViewById<Button>(R.id.registerbutton)
@@ -88,9 +98,9 @@ class LoginActivity : AppCompatActivity() {
                     //account already exists
                     Toast.makeText(getApplicationContext(), "Account already exists.", Toast.LENGTH_SHORT).show();
                 }
-
             }
-
         }
+
+
     }
 }

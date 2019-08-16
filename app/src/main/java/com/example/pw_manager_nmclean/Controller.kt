@@ -13,7 +13,14 @@ class Controller {
         }
             userlist.addUser(user(email, pw))
             return true
+    }
 
+    fun login(email:String, pw:String) : Boolean {
+        userlist.getArray().forEach(){
+            if(it.email.equals(email) && it.pw.equals(pw))
+                return true
+        }
+        return false
     }
 
 }

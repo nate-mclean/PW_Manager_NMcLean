@@ -5,13 +5,13 @@ class userManager {
 
     //populate userlist with saved data on app startup
 
-    fun createAccount(email:String,pw:String) : Boolean {
+    fun createAccount(email:String, pw:String) : Boolean {
 
         userlist.getArray().forEach(){
             if(it.email.equals(email))
                 return false
         }
-            userlist.addUser(user(email, pw))
+            userlist.addUser(user(email, pw, ArrayList<passwordEntity>()))
             return true
     }
 

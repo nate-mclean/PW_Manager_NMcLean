@@ -5,11 +5,12 @@ import android.os.Bundle
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_main.*
 import android.view.Gravity
-import android.widget.PopupWindow
-import android.widget.LinearLayout
 import android.content.Context
 import android.view.LayoutInflater
-
+import android.view.View
+import android.widget.*
+import android.widget.ArrayAdapter
+import java.net.URL
 
 
 class MainActivity : AppCompatActivity() {
@@ -18,8 +19,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //get user info from login
+        //sample info
+        val array = ArrayList<passwordEntity>()
+        val user = user("nate4495@gmail.com","12345678",array)
+
         //add new password with button
         val add = findViewById<FloatingActionButton>(R.id.floatingActionButton)
+
 
         add.setOnClickListener{
             val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -35,8 +42,26 @@ class MainActivity : AppCompatActivity() {
             // which view you pass in doesn't matter, it is only used for the window tolken
             popupWindow.showAtLocation(findViewById(R.id.floatingActionButton), Gravity.CENTER, 0, 0)
 
+
+            //add password button
+            val editwebsite = popupView.findViewById<EditText>(R.id.editwebsite)
+            val editemail = popupView.findViewById<EditText>(R.id.editemail)
+            val editpw = popupView.findViewById<EditText>(R.id.editpw)
+
+            val addbutton = popupView.findViewById<Button>(R.id.addpassword)
+            addbutton.setOnClickListener{
+                user.addpassword(user,editemail.text.toString(),editpw.text.toString(),editwebsite.text.toString())
+                popupWindow.dismiss()
+            }
         }
-        //listview
+
+
+
+        //listview auto populate with all user password entities
+        val listview = findViewById<ListView>(R.id.passwordlist)
+        val itemsAdapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, user.onlywebsites())
+        listview.adapter = itemsAdapter
+
         //click listview to bring up more info about password
 
     }

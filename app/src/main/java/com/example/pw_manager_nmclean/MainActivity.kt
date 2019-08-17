@@ -57,9 +57,9 @@ class MainActivity : AppCompatActivity() {
             val email = popupView2.findViewById<TextView>(R.id.email)
             val pw = popupView2.findViewById<TextView>(R.id.pw)
 
-            website.setText(user.passwords.get(position).website)
-            email.setText(user.passwords.get(position).username)
-            pw.setText(user.passwords.get(position).pw)
+            website.setText("Website: " + user.passwords.get(position).website)
+            email.setText("Username: " + user.passwords.get(position).username)
+            pw.setText("Password: " + user.passwords.get(position).pw)
 
 
         }

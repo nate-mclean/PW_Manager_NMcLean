@@ -2,17 +2,11 @@ package com.example.pw_manager_nmclean
 
 import java.net.URL
 
-class user(val email: String, val pw: String, val passwords: ArrayList<passwordEntity>){
+class user(val email: String, val pw: String, val passwords: ArrayList<passwordEntity>, val websites: ArrayList<String>){
 
-    fun addpassword(user:user, login:String, pw:String, url: String){
-        user.passwords.add(passwordEntity(login, pw, url))
+    fun addpassword(login:String, pw:String, url: String){
+        this.passwords.add(passwordEntity(login, pw, url))
+        this.websites.add(url)
     }
-    fun onlywebsites(): ArrayList<String>{
 
-        var a = ArrayList<String>()
-        this.passwords.forEach(){
-            a.add(it.website)
-        }
-        return a
-    }
 }

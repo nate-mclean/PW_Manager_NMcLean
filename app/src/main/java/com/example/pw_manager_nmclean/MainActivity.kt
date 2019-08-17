@@ -22,7 +22,18 @@ class MainActivity : AppCompatActivity() {
         //get user info from login
         //sample info
         val array = ArrayList<passwordEntity>()
-        val user = user("nate4495@gmail.com","12345678",array)
+        val array2 = ArrayList<String>()
+        val user = user("nate4495@gmail.com","12345678",array,array2)
+
+
+        //listview auto populate with all user password entities
+        val listview = findViewById<ListView>(R.id.passwordlist)
+        val itemsAdapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, user.websites)
+        listview.adapter = itemsAdapter
+        runOnUiThread { itemsAdapter.notifyDataSetChanged() }
+
+        //click listview to bring up more info about password
+
 
         //add new password with button
         val add = findViewById<FloatingActionButton>(R.id.floatingActionButton)
@@ -50,19 +61,15 @@ class MainActivity : AppCompatActivity() {
 
             val addbutton = popupView.findViewById<Button>(R.id.addpassword)
             addbutton.setOnClickListener{
-                user.addpassword(user,editemail.text.toString(),editpw.text.toString(),editwebsite.text.toString())
+                user.addpassword(editemail.text.toString(),editpw.text.toString(),editwebsite.text.toString())
                 popupWindow.dismiss()
+                //itemsAdapter.notifyDataSetChanged()
             }
         }
 
 
 
-        //listview auto populate with all user password entities
-        val listview = findViewById<ListView>(R.id.passwordlist)
-        val itemsAdapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, user.onlywebsites())
-        listview.adapter = itemsAdapter
 
-        //click listview to bring up more info about password
 
     }
 }

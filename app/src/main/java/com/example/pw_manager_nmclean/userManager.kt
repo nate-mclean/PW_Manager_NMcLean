@@ -15,7 +15,7 @@ class userManager {
             if(it.email.equals(email))
                 return false
         }
-            userlist.addUser(user(email, pw, ArrayList<passwordEntity>()))
+            userlist.addUser(user(email, pw, ArrayList<passwordEntity>(), ArrayList<String>()))
             return true
     }
 

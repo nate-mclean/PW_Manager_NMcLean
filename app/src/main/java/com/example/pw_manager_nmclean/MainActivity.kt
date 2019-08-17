@@ -6,6 +6,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_main.*
 import android.view.Gravity
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
@@ -33,6 +34,35 @@ class MainActivity : AppCompatActivity() {
         runOnUiThread { itemsAdapter.notifyDataSetChanged() }
 
         //click listview to bring up more info about password
+        listview.setOnItemClickListener { parent, view, position, id ->
+            val element = user.passwords.get(position) // The item that was clicked
+
+            //bring up popup with info
+            val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            val popupView2 = inflater.inflate(R.layout.view_pw_popup, null)
+
+            // create the popup window
+            val width = LinearLayout.LayoutParams.WRAP_CONTENT
+            val height = LinearLayout.LayoutParams.WRAP_CONTENT
+            val focusable = true // lets taps outside the popup also dismiss it
+            val popupWindow = PopupWindow(popupView2, width, height, focusable)
+
+            // show the popup window
+            // which view you pass in doesn't matter, it is only used for the window tolken
+            popupWindow.showAtLocation(findViewById(R.id.floatingActionButton), Gravity.CENTER, 0, 0)
+
+
+            //add password button
+            val website = popupView2.findViewById<TextView>(R.id.website)
+            val email = popupView2.findViewById<TextView>(R.id.email)
+            val pw = popupView2.findViewById<TextView>(R.id.pw)
+
+            website.setText(user.passwords.get(position).website)
+            email.setText(user.passwords.get(position).username)
+            pw.setText(user.passwords.get(position).pw)
+
+
+        }
 
 
         //add new password with button

@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         //get all websites for that user
 
         val websites = ArrayList<String>()
-        LitePal.findAll<PWEntities>().forEach(){
+        LitePal.findAll<Passwords>().forEach(){
             if(it.email == myEmail)
                 websites.add(it.siteaddress)
         }
@@ -43,7 +43,6 @@ class MainActivity : AppCompatActivity() {
         val listview = findViewById<ListView>(R.id.passwordlist)
         val itemsAdapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, websites)
         listview.adapter = itemsAdapter
-        runOnUiThread { itemsAdapter.notifyDataSetChanged() }
 
         //click listview to bring up more info about password
         listview.setOnItemClickListener { _, _, position, _ ->
@@ -68,9 +67,16 @@ class MainActivity : AppCompatActivity() {
             val email = popupView2.findViewById<TextView>(R.id.email)
             val pw = popupView2.findViewById<TextView>(R.id.pw)
 
+            LitePal.findAll<Passwords>().forEach(){
+                if(it.siteaddress == websites.get(position)) {
+                    website.setText("Website: " + it.siteaddress)
+                    email.setText("Username: " + it.sitelogin)
+                    pw.setText("Password: " + it.sitepassword)
+                }
+            }
             /*
             val conditions = "siteaddress = " + myEmail
-            val websitesTable = LitePal.where(conditions).find<PWEntities>()
+            val websitesTable = LitePal.where(conditions).find<Passwords>()
 
             website.setText("Website: " + user.passwords.get(position).website)
             email.setText("Username: " + user.passwords.get(position).username)
@@ -109,14 +115,21 @@ class MainActivity : AppCompatActivity() {
             addbutton.setOnClickListener{
 
                 //SAVE new entry to database
-                val newpw = PWEntities()
+                val newpw = Passwords()
                 newpw.email = myEmail
                 newpw.siteaddress = editwebsite.text.toString()
                 newpw.sitepassword = editpw.text.toString()
                 newpw.sitelogin = editemail.text.toString()
                 newpw.save()
-                val test = LitePal.findAll<PWEntities>()
-                val db = LitePal.getDatabase()
+
+                websites.clear()
+
+                //update listview
+                LitePal.findAll<Passwords>().forEach(){
+                    if(it.email == myEmail)
+                        websites.add(it.siteaddress)
+                }
+                itemsAdapter.notifyDataSetChanged()
 
 
                 popupWindow.dismiss()

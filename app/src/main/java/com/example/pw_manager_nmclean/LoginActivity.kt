@@ -9,7 +9,6 @@ import android.widget.Toast
 import com.wajahatkarim3.easyvalidation.core.view_ktx.validEmail
 import com.wajahatkarim3.easyvalidation.core.view_ktx.validator
 import org.litepal.LitePal
-import android.database.sqlite.SQLiteDatabase
 import org.litepal.extension.findAll
 
 

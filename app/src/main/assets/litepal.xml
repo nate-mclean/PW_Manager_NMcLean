@@ -33,7 +33,7 @@
     -->
     <list>
         <mapping class="com.example.pw_manager_nmclean.Users" />
-        <mapping class="com.example.pw_manager_nmclean.pwEntities" />
+        <mapping class="com.example.pw_manager_nmclean.PWEntities" />
     </list>
 
     <!--

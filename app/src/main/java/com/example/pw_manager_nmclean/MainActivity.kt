@@ -3,15 +3,15 @@ package com.example.pw_manager_nmclean
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.android.synthetic.main.activity_main.*
 import android.view.Gravity
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.*
 import android.widget.ArrayAdapter
-import java.net.URL
+import org.litepal.LitePal
+import org.litepal.extension.findAll
+
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -21,15 +21,27 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         //get user info from login
-        //sample info
-        val array = ArrayList<passwordEntity>()
-        val array2 = ArrayList<String>()
-        val user = user("nate4495@gmail.com","12345678",array,array2)
+        val myEmail = intent.getStringExtra("email")
+        val myPassword = intent.getStringExtra("password")
+
+        //init database
+        LitePal.initialize(this)
+
+
+        //get all websites for that user
+
+        val websites = ArrayList<String>()
+        LitePal.findAll<PWEntities>().forEach(){
+            if(it.email == myEmail)
+                websites.add(it.siteaddress)
+        }
+
+
 
 
         //listview auto populate with all user password entities
         val listview = findViewById<ListView>(R.id.passwordlist)
-        val itemsAdapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, user.websites)
+        val itemsAdapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, websites)
         listview.adapter = itemsAdapter
         runOnUiThread { itemsAdapter.notifyDataSetChanged() }
 
@@ -52,14 +64,18 @@ class MainActivity : AppCompatActivity() {
             popupWindow.showAtLocation(findViewById(R.id.floatingActionButton), Gravity.CENTER, 0, 0)
 
 
-            //add password button
             val website = popupView2.findViewById<TextView>(R.id.website)
             val email = popupView2.findViewById<TextView>(R.id.email)
             val pw = popupView2.findViewById<TextView>(R.id.pw)
 
+            /*
+            val conditions = "siteaddress = " + myEmail
+            val websitesTable = LitePal.where(conditions).find<PWEntities>()
+
             website.setText("Website: " + user.passwords.get(position).website)
             email.setText("Username: " + user.passwords.get(position).username)
             pw.setText("Password: " + user.passwords.get(position).pw)
+            */
 
 
         }
@@ -91,7 +107,18 @@ class MainActivity : AppCompatActivity() {
 
             val addbutton = popupView.findViewById<Button>(R.id.addpassword)
             addbutton.setOnClickListener{
-                user.addpassword(editemail.text.toString(),editpw.text.toString(),editwebsite.text.toString())
+
+                //SAVE new entry to database
+                val newpw = PWEntities()
+                newpw.email = myEmail
+                newpw.siteaddress = editwebsite.text.toString()
+                newpw.sitepassword = editpw.text.toString()
+                newpw.sitelogin = editemail.text.toString()
+                newpw.save()
+                val test = LitePal.findAll<PWEntities>()
+                val db = LitePal.getDatabase()
+
+
                 popupWindow.dismiss()
                 //itemsAdapter.notifyDataSetChanged()
             }

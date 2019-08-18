@@ -17,9 +17,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        //instantiate litepal
-        //val userManager = userManager()
-        //val db = LitePal.getDatabase()
+        //initialize litepal
         LitePal.initialize(this)
 
         super.onCreate(savedInstanceState)
@@ -40,8 +38,11 @@ class LoginActivity : AppCompatActivity() {
 
             if (this.login(myEmail, myPW)) {
                 //start main activity if login is valid
+                //send over login information to mainactivity
+
                 val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra("keyIdentifier", 1)
+                intent.putExtra("email", myEmail)
+                intent.putExtra("password", myPW)
                 startActivity(intent)
                 Toast.makeText(getApplicationContext(), "Login Successful.", Toast.LENGTH_SHORT).show();
             } else {
@@ -133,6 +134,7 @@ class LoginActivity : AppCompatActivity() {
         newuser.email = email
         newuser.password = pw
         newuser.save()
+
         return true
 
     }

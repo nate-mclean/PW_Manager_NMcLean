@@ -34,8 +34,8 @@ class MainActivity : AppCompatActivity() {
         runOnUiThread { itemsAdapter.notifyDataSetChanged() }
 
         //click listview to bring up more info about password
-        listview.setOnItemClickListener { parent, view, position, id ->
-            val element = user.passwords.get(position) // The item that was clicked
+        listview.setOnItemClickListener { _, _, position, _ ->
+           // val element = user.passwords.get(position) // The item that was clicked
 
             //bring up popup with info
             val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater

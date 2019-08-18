@@ -8,13 +8,19 @@ import android.widget.EditText
 import android.widget.Toast
 import com.wajahatkarim3.easyvalidation.core.view_ktx.validEmail
 import com.wajahatkarim3.easyvalidation.core.view_ktx.validator
+import org.litepal.LitePal
+import android.database.sqlite.SQLiteDatabase
+import org.litepal.extension.findAll
+
 
 class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        //instantiate controller
-        val userManager = userManager()
+        //instantiate litepal
+        //val userManager = userManager()
+        //val db = LitePal.getDatabase()
+        LitePal.initialize(this)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -32,7 +38,7 @@ class LoginActivity : AppCompatActivity() {
             var myPW = editpw.text.toString()
             //check if login is valid
 
-            if (userManager.login(myEmail, myPW)) {
+            if (this.login(myEmail, myPW)) {
                 //start main activity if login is valid
                 val intent = Intent(this, MainActivity::class.java)
                 intent.putExtra("keyIdentifier", 1)
@@ -85,7 +91,7 @@ class LoginActivity : AppCompatActivity() {
             if(validEmail && validPw){
 
                 //call controller to create account, return bool
-                if(userManager.createAccount(myEmail,myPW))
+                if(this.createAccount(myEmail,myPW))
                 {
                     //if true
                     //toast success
@@ -102,6 +108,32 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
+
+    }
+
+    //see if user credentials exist
+    fun login(email:String, pw:String) : Boolean {
+
+        LitePal.findAll<Users>().forEach(){
+            if(it.email == email && it.password == pw)
+                return true
+        }
+        return false
+    }
+    //create a new account
+    fun createAccount(email:String, pw:String) : Boolean {
+
+        //ee if user already exisits
+        LitePal.findAll<Users>().forEach(){
+            if(it.email.equals(email))
+                return false
+        }
+        //if not then create new and add to database
+        val newuser = Users()
+        newuser.email = email
+        newuser.password = pw
+        newuser.save()
+        return true
 
     }
 }

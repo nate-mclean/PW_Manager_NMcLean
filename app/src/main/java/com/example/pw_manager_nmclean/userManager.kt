@@ -1,6 +1,9 @@
 package com.example.pw_manager_nmclean
 
 import java.net.URL
+import org.litepal.LitePal
+
+
 
 class userManager {
     val userlist = userlist()
@@ -22,8 +25,8 @@ class userManager {
     //see if user credentials exist
     fun login(email:String, pw:String) : Boolean {
 
-        userlist.getArray().forEach(){
-            if(it.email.equals(email) && it.pw.equals(pw))
+        LitePal.findAll(Users::class.java).forEach(){
+            if(it.email == email && it.password == pw)
                 return true
         }
         return false

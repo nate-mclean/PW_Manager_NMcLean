@@ -95,7 +95,7 @@ class LoginActivity : AppCompatActivity() {
                 {
                     //if true
                     //toast success
-                    editemail.setText("")
+                    editpw.setText("")
                     Toast.makeText(getApplicationContext(), "Account created successfully.", Toast.LENGTH_SHORT).show();
                 }
                 else

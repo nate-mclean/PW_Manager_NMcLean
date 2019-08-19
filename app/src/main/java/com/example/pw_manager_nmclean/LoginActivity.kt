@@ -16,7 +16,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        //initialize litepal
+        //initialize litepal for persistent sqlite storage
         LitePal.initialize(this)
 
         super.onCreate(savedInstanceState)
@@ -28,17 +28,16 @@ class LoginActivity : AppCompatActivity() {
 
 
 
-        //login button
+        //login button on click
         val loginbutton = findViewById<Button>(R.id.loginbutton)
         loginbutton.setOnClickListener {
             var myEmail = editemail.text.toString()
             var myPW = editpw.text.toString()
-            //check if login is valid
 
+            //check if login is valid
             if (this.login(myEmail, myPW)) {
                 //start main activity if login is valid
-                //send over login information to mainactivity
-
+                //send over login information to main activity
                 val intent = Intent(this, MainActivity::class.java)
                 intent.putExtra("email", myEmail)
                 intent.putExtra("password", myPW)
@@ -50,7 +49,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
 
-        //register button
+        //register button on click listener
         val registerbutton = findViewById<Button>(R.id.registerbutton)
         registerbutton.setOnClickListener {
             var myEmail = editemail.text.toString()
@@ -86,7 +85,7 @@ class LoginActivity : AppCompatActivity() {
                 }
                 .check()
 
-            //if both yes (count == 2) then save to memory
+            //if both yes , then save to memory
             //create account, clear fields, toast success
             if(validEmail && validPw){
 
@@ -119,10 +118,11 @@ class LoginActivity : AppCompatActivity() {
         }
         return false
     }
+
     //create a new account
     fun createAccount(email:String, pw:String) : Boolean {
 
-        //ee if user already exisits
+        //see if user already exisits
         LitePal.findAll<Users>().forEach(){
             if(it.email.equals(email))
                 return false
